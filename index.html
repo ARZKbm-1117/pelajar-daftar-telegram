@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f0f4f8;
+            background-color: #eef2f5;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,24 +18,22 @@
         }
         .form-card {
             background: #ffffff;
-            padding: 35px;
+            padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
             max-width: 450px;
             width: 100%;
         }
         h2 {
             text-align: center;
-            color: #1a252f;
-            margin: 0 0 8px 0;
-            font-size: 22px;
+            color: #2c3e50;
+            margin-bottom: 5px;
         }
         p.subtitle {
             text-align: center;
             color: #7f8c8d;
             font-size: 14px;
-            margin: 0 0 25px 0;
-            line-height: 1.4;
+            margin-bottom: 25px;
         }
         .input-group {
             margin-bottom: 20px;
@@ -45,25 +43,22 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: #34495e;
-            font-size: 14px;
         }
         input[type="text"], input[type="tel"], select {
             width: 100%;
             padding: 12px;
-            border: 2px solid #dcdde1;
+            border: 2px solid #bdc3c7;
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 15px;
             transition: border-color 0.3s;
-            background-color: #fbfbfb;
         }
         input:focus, select:focus {
             border-color: #0088cc;
             outline: none;
-            background-color: #fff;
         }
         .btn-submit {
-            background-color: #0088cc;
+            background-color: #0088cc; /* Warna Telegram */
             color: white;
             border: none;
             width: 100%;
@@ -73,14 +68,12 @@
             font-weight: bold;
             cursor: pointer;
             transition: background 0.3s, transform 0.1s;
-            margin-top: 10px;
         }
         .btn-submit:hover {
             background-color: #006699;
         }
-        .btn-submit:disabled {
-            background-color: #bdc3c7;
-            cursor: not-allowed;
+        .btn-submit:active {
+            transform: scale(0.98);
         }
     </style>
 </head>
@@ -88,10 +81,10 @@
 
 <div class="form-card">
     <h2>Borang Pendaftaran</h2>
-    <p class="subtitle">Sila isi maklumat untuk merekod pendaftaran dan mendapatkan pautan kelas Telegram.</p>
+    <p class="subtitle">Sila isi maklumat untuk mendapatkan pautan kelas Telegram.</p>
     
-    <!-- GANTIKAN URL_WEB_APP_ANDA DI SINI -->
-    <form id="borangPendaftaran">
+    <!-- Gantikan 'URL_GOOGLE_SCRIPT_ANDA' jika mahu sambung ke Google Sheets -->
+    <form id="borangPendaftaran" action="https://script.google.com/macros/s/AKfycbzbLXL96H7QzeqJ0M6sZnrdXhUqhM6ZNj91i6LKtm1mG6xj_FoIP5lmb3l0DMiGQ2Xp/exec" method="POST">
         
         <div class="input-group">
             <label for="nama">Nama Penuh Pelajar:</label>
@@ -115,46 +108,23 @@
             </select>
         </div>
         
-        <button type="submit" id="submitBtn" class="btn-submit">Daftar & Join Telegram</button>
+        <button type="submit" class="btn-submit">Daftar & Join Telegram</button>
     </form>
 </div>
 
 <script>
-    const form = document.getElementById('borangPendaftaran');
-    const submitBtn = document.getElementById('submitBtn');
-    
-    // Sila letakkan URL Google Apps Script Web App anda di bawah ini:
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbzbLXL96H7QzeqJ0M6sZnrdXhUqhM6ZNj91i6LKtm1mG6xj_FoIP5lmb3l0DMiGQ2Xp/exec"; 
-    
-    // Pautan Telegram kelas anda
-    const linkTelegram = "https://t.me/+SwXgUMtp0F9hYWE1";
+    document.getElementById('borangPendaftaran').addEventListener('submit', function(e) {
+        // 1. Sekat form daripada submit cara biasa (jika mahu buat hantaran data ke Google Sheet dulu)
+        // e.preventDefault(); 
 
-    form.addEventListener('submit', function(e) {
-        e.preventDefault(); // Sekat borang daripada refresh skrin sesuka hati
-        
-        // Tukar tulisan butang tanda sistem sedang bekerja
-        submitBtn.disabled = true;
-        submitBtn.innerText = "Sila tunggu, sedang mendaftar...";
-        
-        // Sediakan data untuk dihantar
-        const formData = new FormData(form);
-        
-        // Hantar data ke Google Sheet secara senyap di latar belakang (AJAX/Fetch)
-        fetch(webAppUrl, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            // Sebaik sahaja Google Sheet selesai terima data, bawa pelajar terus ke Telegram
-            alert("Pendaftaran Berjaya Disimpan! Klik OK untuk masuk ke Telegram Kelas.");
-            window.location.href = https://t.me/+SwXgUMtp0F9hYWE1;
-        })
-        .catch(error => {
-            // Jika internet terputus atau Google Sheet error, tetap beri mereka masuk Telegram
-            console.error('Error:', error);
-            alert("Sistem sibuk, tetapi anda boleh terus masuk ke Telegram Kelas.");
-            window.location.href = https://t.me/+SwXgUMtp0F9hYWE1;
-        });
+        // 2. Link Telegram yang diberikan
+        const linkTelegram = "https://t.me/+SwXgUMtp0F9hYWE1";
+
+        // 3. Makluman kepada pelajar
+        alert("Pendaftaran anda telah direkodkan! Klik OK untuk masuk ke Telegram Kelas.");
+
+        // 4. Buka aplikasi/link Telegram
+        window.location.href = linkTelegram; 
     });
 </script>
 
